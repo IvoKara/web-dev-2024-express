@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { User } from '../types';
+import { universities } from './university.route';
 
 export const userRouter = Router();
 
