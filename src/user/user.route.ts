@@ -73,4 +73,20 @@ userRouter.delete('/:id', (req, res) => {
   }
 });
 
-export default userRouter;
+userRouter.patch('/:id/update-university', (req, res) => {
+  const userId = parseInt(req.params.id);
+  const userIndex = users.findIndex((u) => u.id === userId);
+  if (userIndex !== -1) {
+    const universityId = parseInt(req.body.universityId);
+    const universityIndex = universities.findIndex((uni) => uni.id === universityId);
+    if (universityIndex !== -1) {
+      users[userIndex].university = universities[universityIndex]
+      res.json(users[userIndex])
+    } else {
+      res.status(404).json({ message: 'University not found' });
+    }
+
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+})
