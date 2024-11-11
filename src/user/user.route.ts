@@ -1,10 +1,24 @@
 import { Router } from 'express';
+import { User } from '../types';
+import { universities } from './university.route';
 
-const userRouter = Router();
+export const userRouter = Router();
 
-let users = [
-  { id: 1, name: 'John Doe', email: 'john@example.com' },
-  { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+let users: User[] = [
+  {
+    id: 1,
+    name: 'John Doe',
+    email: 'john@example.com',
+    university: universities[0],
+    subjects: ['Math', 'Physics']
+  },
+  {
+    id: 2,
+    name: 'Jane Smith',
+    email: 'jane@example.com',
+    university: universities[1],
+    subjects: ['Networking', 'Hardware']
+  },
 ];
 
 userRouter.get('/', (req, res) => {
@@ -59,4 +73,37 @@ userRouter.delete('/:id', (req, res) => {
   }
 });
 
-export default userRouter;
+userRouter.patch('/:id/update-university', (req, res) => {
+  const userId = parseInt(req.params.id);
+  const userIndex = users.findIndex((u) => u.id === userId);
+  if (userIndex !== -1) {
+    const universityId = parseInt(req.body.universityId);
+    const universityIndex = universities.findIndex((uni) => uni.id === universityId);
+    if (universityIndex !== -1) {
+      users[userIndex].university = universities[universityIndex]
+      res.json(users[userIndex])
+    } else {
+      res.status(404).json({ message: 'University not found' });
+    }
+
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+})
+
+userRouter.patch('/:id/update-subjects', (req, res) => {
+  const userId = parseInt(req.params.id);
+  const userIndex = users.findIndex((u) => u.id === userId);
+  if (userIndex !== -1) {
+    const newSubjects = req.body.subjects as string[]
+    if (newSubjects.length > 0) {
+      users[userIndex].subjects = newSubjects
+      res.json(users[userIndex])
+    } else {
+      res.status(404).json({ message: 'Empty subjects could not be passed' });
+    }
+
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+})
