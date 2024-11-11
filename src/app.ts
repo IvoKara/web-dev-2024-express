@@ -1,6 +1,6 @@
 // src/app.ts
 import express from 'express';
-import userRouter from './user/user.route';
+import { userRouter } from './user/user.route';
 
 const app = express();
 const PORT = 3000;

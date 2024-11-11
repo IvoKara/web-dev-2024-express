@@ -1,10 +1,23 @@
 import { Router } from 'express';
+import { User } from '../types';
 
-const userRouter = Router();
+export const userRouter = Router();
 
-let users = [
-  { id: 1, name: 'John Doe', email: 'john@example.com' },
-  { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+let users: User[] = [
+  {
+    id: 1,
+    name: 'John Doe',
+    email: 'john@example.com',
+    university: universities[0],
+    subjects: ['Math', 'Physics']
+  },
+  {
+    id: 2,
+    name: 'Jane Smith',
+    email: 'jane@example.com',
+    university: universities[1],
+    subjects: ['Networking', 'Hardware']
+  },
 ];
 
 userRouter.get('/', (req, res) => {
