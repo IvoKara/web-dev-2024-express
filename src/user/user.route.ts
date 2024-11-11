@@ -90,3 +90,20 @@ userRouter.patch('/:id/update-university', (req, res) => {
     res.status(404).json({ message: 'User not found' });
   }
 })
+
+userRouter.patch('/:id/update-subjects', (req, res) => {
+  const userId = parseInt(req.params.id);
+  const userIndex = users.findIndex((u) => u.id === userId);
+  if (userIndex !== -1) {
+    const newSubjects = req.body.subjects as string[]
+    if (newSubjects.length > 0) {
+      users[userIndex].subjects = newSubjects
+      res.json(users[userIndex])
+    } else {
+      res.status(404).json({ message: 'Empty subjects could not be passed' });
+    }
+
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+})
